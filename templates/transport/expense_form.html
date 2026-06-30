@@ -1,0 +1,367 @@
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block title %}Add Transport Expense{% endblock %}
+
+{% block extra_css %}
+<style>
+  .expense-form-page{
+    max-width: 980px;
+    margin: 0 auto;
+  }
+
+  .expense-form-hero{
+    border:1px solid rgba(15,23,42,.06);
+    border-radius:18px;
+    padding:1rem 1rem .95rem;
+    background:
+      linear-gradient(135deg, rgba(37,99,235,.06), rgba(59,130,246,.02)),
+      #fff;
+    box-shadow:0 10px 30px rgba(15,23,42,.05);
+    margin-bottom:1rem;
+  }
+
+  .expense-form-title{
+    margin:0;
+    font-size:1.04rem;
+    font-weight:800;
+    letter-spacing:-.02em;
+    color:#0f172a;
+    display:flex;
+    align-items:center;
+    gap:.5rem;
+  }
+
+  .expense-form-subtitle{
+    font-size:.75rem;
+    color:#64748b;
+    margin-top:.2rem;
+  }
+
+  .expense-back-btn{
+    border-radius:12px;
+    font-size:.77rem;
+    font-weight:700;
+    padding:.62rem .9rem;
+  }
+
+  .expense-form-card{
+    border:1px solid rgba(15,23,42,.06);
+    border-radius:18px;
+    background:#fff;
+    box-shadow:0 10px 28px rgba(15,23,42,.05);
+    overflow:hidden;
+  }
+
+  .expense-form-head{
+    padding:.95rem 1rem;
+    border-bottom:1px solid rgba(15,23,42,.06);
+    background:linear-gradient(180deg, #ffffff, #fbfdff);
+  }
+
+  .expense-form-head h4{
+    margin:0;
+    font-size:.84rem;
+    font-weight:800;
+    color:#0f172a;
+    display:flex;
+    align-items:center;
+    gap:.45rem;
+  }
+
+  .expense-form-body{
+    padding:1rem;
+  }
+
+  .expense-alert{
+    border:1px solid rgba(239,68,68,.18);
+    background:rgba(239,68,68,.07);
+    color:#b91c1c;
+    padding:.78rem .9rem;
+    border-radius:12px;
+    font-size:.75rem;
+    font-weight:700;
+    margin-bottom:1rem;
+  }
+
+  .expense-grid{
+    display:grid;
+    grid-template-columns:repeat(2, minmax(0,1fr));
+    gap:.95rem;
+  }
+
+  .expense-field{
+    min-width:0;
+  }
+
+  .expense-field.full{
+    grid-column:1 / -1;
+  }
+
+  .expense-label{
+    display:block;
+    margin:0 0 .42rem 0;
+    font-size:.69rem;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:#64748b;
+  }
+
+  .expense-form-body input,
+  .expense-form-body select,
+  .expense-form-body textarea{
+    width:100%;
+    box-sizing:border-box;
+    border-radius:12px;
+    border:1px solid #dbe4f0;
+    background:#fff;
+    padding:.7rem .85rem;
+    font-size:.79rem;
+    min-height:42px;
+    color:#0f172a;
+    transition:.18s ease;
+    box-shadow:none;
+    font-family:inherit;
+  }
+
+  .expense-form-body textarea{
+    min-height:110px;
+    resize:vertical;
+  }
+
+  .expense-form-body input:focus,
+  .expense-form-body select:focus,
+  .expense-form-body textarea:focus{
+    outline:none;
+    border-color:rgba(37,99,235,.40);
+    box-shadow:0 0 0 .18rem rgba(37,99,235,.10);
+  }
+
+  .expense-form-body select{
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    appearance:none;
+    padding-right:44px;
+    background-image:
+      linear-gradient(45deg, transparent 50%, #64748b 50%),
+      linear-gradient(135deg, #64748b 50%, transparent 50%),
+      linear-gradient(to right, rgba(15,23,42,.10), rgba(15,23,42,.10));
+    background-position:
+      calc(100% - 18px) 50%,
+      calc(100% - 13px) 50%,
+      calc(100% - 2.65rem) 50%;
+    background-size:6px 6px, 6px 6px, 1px 22px;
+    background-repeat:no-repeat;
+  }
+
+  .expense-help{
+    font-size:.68rem;
+    color:#94a3b8;
+    margin-top:.35rem;
+  }
+
+  .expense-error{
+    font-size:.72rem;
+    color:#dc2626;
+    margin-top:.35rem;
+    font-weight:700;
+  }
+
+  .expense-note{
+    margin-top:.95rem;
+    padding:.75rem .85rem;
+    border-radius:12px;
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    color:#64748b;
+    font-size:.72rem;
+    font-weight:700;
+  }
+
+  .expense-actions{
+    display:flex;
+    gap:.65rem;
+    justify-content:flex-end;
+    margin-top:1rem;
+    flex-wrap:wrap;
+  }
+
+  .expense-actions .btn{
+    border-radius:12px;
+    min-height:42px;
+    padding:.62rem 1rem;
+    font-size:.78rem;
+    font-weight:700;
+  }
+
+  .expense-save-btn{
+    box-shadow:0 10px 22px rgba(37,99,235,.14);
+  }
+
+  @media (max-width: 767.98px){
+    .expense-grid{
+      grid-template-columns:1fr;
+    }
+
+    .expense-form-hero{
+      padding:.9rem;
+    }
+
+    .expense-form-title{
+      font-size:.98rem;
+    }
+
+    .expense-form-subtitle{
+      font-size:.73rem;
+    }
+
+    .expense-form-body{
+      padding:.9rem;
+    }
+
+    .expense-actions .btn{
+      width:100%;
+      justify-content:center;
+      display:inline-flex;
+      align-items:center;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="expense-form-page">
+
+  <div class="expense-form-hero">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+      <div>
+        <h3 class="expense-form-title">
+          <i class="fa-solid fa-receipt text-primary"></i>
+          Add Expense
+        </h3>
+        <div class="expense-form-subtitle">
+          Enter transport or general office expense details clearly.
+        </div>
+      </div>
+
+      <a href="{% url 'transport:expense_list' %}" class="btn btn-outline-secondary expense-back-btn">
+        <i class="fa-solid fa-arrow-left me-1"></i> Back
+      </a>
+    </div>
+  </div>
+
+  <div class="expense-form-card">
+    <div class="expense-form-head">
+      <h4>
+        <i class="fa-solid fa-pen-to-square text-primary"></i>
+        Expense Details
+      </h4>
+    </div>
+
+    <div class="expense-form-body">
+      <form method="post" enctype="multipart/form-data" novalidate id="expenseForm">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+          <div class="expense-alert">{{ form.non_field_errors }}</div>
+        {% endif %}
+
+        <div class="expense-grid">
+          <div class="expense-field">
+            <label class="expense-label" for="{{ form.expense_date.id_for_label }}">Date</label>
+            {{ form.expense_date }}
+            {% if form.expense_date.errors %}<div class="expense-error">{{ form.expense_date.errors|striptags }}</div>{% endif %}
+          </div>
+
+          <div class="expense-field">
+            <label class="expense-label" for="{{ form.expense_type.id_for_label }}">Type</label>
+            {{ form.expense_type }}
+            {% if form.expense_type.errors %}<div class="expense-error">{{ form.expense_type.errors|striptags }}</div>{% endif %}
+            <div class="expense-help">Fuel, repair, and service can use a vehicle. Office costs can stay general.</div>
+          </div>
+
+          <div class="expense-field">
+            <label class="expense-label" for="{{ form.vehicle.id_for_label }}">Vehicle</label>
+            {{ form.vehicle }}
+            {% if form.vehicle.errors %}<div class="expense-error">{{ form.vehicle.errors|striptags }}</div>{% endif %}
+            <div class="expense-help">Leave empty for general or office expenses.</div>
+          </div>
+
+          <div class="expense-field">
+            <label class="expense-label" for="{{ form.amount.id_for_label }}">Amount</label>
+            {{ form.amount }}
+            {% if form.amount.errors %}<div class="expense-error">{{ form.amount.errors|striptags }}</div>{% endif %}
+          </div>
+
+          <div class="expense-field full">
+            <label class="expense-label" for="{{ form.description.id_for_label }}">Description</label>
+            {{ form.description }}
+            {% if form.description.errors %}<div class="expense-error">{{ form.description.errors|striptags }}</div>{% endif %}
+          </div>
+
+          <div class="expense-field full">
+            <label class="expense-label" for="{{ form.branch.id_for_label }}">Branch</label>
+            {{ form.branch }}
+            {% if form.branch.errors %}<div class="expense-error">{{ form.branch.errors|striptags }}</div>{% endif %}
+          </div>
+        </div>
+
+        <div class="expense-note">
+          Vehicle selected = vehicle expense. No vehicle selected = general or office expense.
+        </div>
+
+        <div class="expense-actions">
+          <a href="{% url 'transport:expense_list' %}" class="btn btn-outline-secondary">Cancel</a>
+          <button type="submit" class="btn btn-primary expense-save-btn">
+            <i class="fa-solid fa-floppy-disk me-1"></i> Save Expense
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.getElementById('expenseForm');
+  if (!form) return;
+
+  const controls = form.querySelectorAll('input, select, textarea');
+
+  controls.forEach(el => {
+    if (el.type === 'hidden' || el.type === 'submit' || el.type === 'button') return;
+
+    const id = el.id || el.name;
+    const tag = el.tagName.toLowerCase();
+
+    if (!el.placeholder && tag !== 'select' && id) {
+      const label = form.querySelector('label[for="' + id + '"]');
+      if (label) el.placeholder = label.textContent.trim();
+    }
+
+    const name = (el.name || '').toLowerCase();
+    if (name.includes('amount')) {
+      el.setAttribute('inputmode', 'decimal');
+      el.setAttribute('pattern', '[0-9.,]*');
+      el.setAttribute('autocomplete', 'off');
+    }
+  });
+
+  form.querySelectorAll('input, select').forEach((el) => {
+    el.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter') {
+        const tag = e.target.tagName.toLowerCase();
+        if (tag !== 'textarea') {
+          e.preventDefault();
+          form.requestSubmit ? form.requestSubmit() : form.submit();
+        }
+      }
+    });
+  });
+});
+</script>
+{% endblock %}

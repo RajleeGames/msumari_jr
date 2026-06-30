@@ -1,0 +1,456 @@
+{# templates/transport/vehicle_form.html #}
+{% extends "base.html" %}
+{% load humanize %}
+
+{% block title %}Add Vehicle{% endblock %}
+
+{% block extra_css %}
+<style>
+  .vehicle-page{
+    max-width: 980px;
+    margin: 0 auto;
+  }
+
+  .vehicle-hero{
+    border:1px solid rgba(15,23,42,.06);
+    border-radius:18px;
+    padding:1rem 1rem .95rem;
+    background:
+      linear-gradient(135deg, rgba(37,99,235,.06), rgba(59,130,246,.02)),
+      #fff;
+    box-shadow:0 10px 30px rgba(15,23,42,.05);
+    margin-bottom:1rem;
+  }
+
+  .vehicle-title{
+    margin:0;
+    font-size:1.04rem;
+    font-weight:800;
+    letter-spacing:-.02em;
+    color:#0f172a;
+    display:flex;
+    align-items:center;
+    gap:.5rem;
+  }
+
+  .vehicle-subtitle{
+    font-size:.75rem;
+    color:#64748b;
+    margin-top:.2rem;
+  }
+
+  .vehicle-back-btn{
+    border-radius:12px;
+    font-size:.77rem;
+    font-weight:700;
+    padding:.62rem .9rem;
+  }
+
+  .vehicle-form-card{
+    border:1px solid rgba(15,23,42,.06);
+    border-radius:18px;
+    background:#fff;
+    box-shadow:0 10px 28px rgba(15,23,42,.05);
+    overflow:hidden;
+  }
+
+  .vehicle-form-head{
+    padding:.95rem 1rem;
+    border-bottom:1px solid rgba(15,23,42,.06);
+    background:linear-gradient(180deg, #ffffff, #fbfdff);
+  }
+
+  .vehicle-form-head h4{
+    margin:0;
+    font-size:.84rem;
+    font-weight:800;
+    color:#0f172a;
+    display:flex;
+    align-items:center;
+    gap:.45rem;
+  }
+
+  .vehicle-form-body{
+    padding:1rem;
+  }
+
+  .vehicle-alert{
+    border:1px solid rgba(239,68,68,.18);
+    background:rgba(239,68,68,.07);
+    color:#b91c1c;
+    padding:.78rem .9rem;
+    border-radius:12px;
+    font-size:.75rem;
+    font-weight:700;
+    margin-bottom:1rem;
+  }
+
+  .v-field{
+    margin-bottom:.95rem;
+  }
+
+  .v-label{
+    display:block;
+    margin:0 0 .42rem 0;
+    font-size:.69rem;
+    font-weight:800;
+    text-transform:uppercase;
+    letter-spacing:.06em;
+    color:#64748b;
+  }
+
+  .vehicle-form-body input,
+  .vehicle-form-body select,
+  .vehicle-form-body textarea{
+    display:block !important;
+    visibility:visible !important;
+    opacity:1 !important;
+    width:100% !important;
+    box-sizing:border-box !important;
+    min-height:42px;
+    border-radius:12px;
+    border:1px solid #dbe4f0;
+    background:#fff;
+    padding:.7rem .85rem;
+    font-size:.79rem;
+    color:#0f172a;
+    transition:.18s ease;
+    box-shadow:none;
+  }
+
+  .vehicle-form-body textarea{
+    min-height:115px;
+    resize:vertical;
+  }
+
+  .vehicle-form-body input:focus,
+  .vehicle-form-body select:focus,
+  .vehicle-form-body textarea:focus{
+    outline:none;
+    border-color:rgba(37,99,235,.40);
+    box-shadow:0 0 0 .18rem rgba(37,99,235,.10);
+  }
+
+  .vehicle-form-body select{
+    -webkit-appearance:none;
+    -moz-appearance:none;
+    appearance:none;
+    padding-right:44px;
+    background-image:
+      linear-gradient(45deg, transparent 50%, #64748b 50%),
+      linear-gradient(135deg, #64748b 50%, transparent 50%),
+      linear-gradient(to right, rgba(15,23,42,.10), rgba(15,23,42,.10));
+    background-position:
+      calc(100% - 18px) 50%,
+      calc(100% - 13px) 50%,
+      calc(100% - 2.65rem) 50%;
+    background-size:6px 6px, 6px 6px, 1px 22px;
+    background-repeat:no-repeat;
+  }
+
+  .vehicle-form-body input[type="search"]::-webkit-search-cancel-button{
+    -webkit-appearance:none;
+  }
+
+  .vehicle-form-body input::-ms-clear{
+    display:none;
+  }
+
+  .v-help{
+    font-size:.68rem;
+    color:#94a3b8;
+    margin-top:.35rem;
+  }
+
+  .v-error{
+    font-size:.72rem;
+    color:#dc2626;
+    margin-top:.35rem;
+    font-weight:700;
+  }
+
+  .v-file-wrap{
+    display:flex;
+    align-items:center;
+    gap:.8rem;
+  }
+
+  .v-preview{
+    width:92px;
+    height:68px;
+    border-radius:12px;
+    border:1px dashed rgba(15,23,42,.14);
+    background:#f3f6f9;
+    display:grid;
+    place-items:center;
+    overflow:hidden;
+    flex:0 0 auto;
+  }
+
+  .v-preview i{
+    color:#9ca3af;
+    font-size:1rem;
+  }
+
+  .v-file-side{
+    flex:1 1 auto;
+    min-width:0;
+  }
+
+  .v-boolean{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    padding:.78rem .85rem;
+    border:1px solid #e2e8f0;
+    border-radius:12px;
+    background:#fff;
+  }
+
+  .v-boolean input[type="checkbox"]{
+    width:18px !important;
+    height:18px !important;
+    min-height:18px !important;
+    padding:0 !important;
+    margin:0 !important;
+    accent-color:#2563eb;
+    border-radius:6px;
+    flex:0 0 auto;
+  }
+
+  .v-boolean label{
+    margin:0 !important;
+    font-size:.78rem;
+    font-weight:700;
+    color:#0f172a;
+  }
+
+  .v-actions{
+    display:flex;
+    gap:.65rem;
+    justify-content:flex-end;
+    margin-top:1rem;
+    flex-wrap:wrap;
+  }
+
+  .v-actions .btn{
+    border-radius:12px;
+    min-height:42px;
+    padding:.62rem 1rem;
+    font-size:.78rem;
+    font-weight:700;
+  }
+
+  .vehicle-save-btn{
+    box-shadow:0 10px 22px rgba(37,99,235,.14);
+  }
+
+  .vehicle-note{
+    font-size:.72rem;
+    color:#64748b;
+    background:#f8fafc;
+    border:1px solid #e2e8f0;
+    border-radius:12px;
+    padding:.7rem .8rem;
+    margin-top:.95rem;
+  }
+
+  @media (max-width: 767.98px){
+    .vehicle-hero{
+      padding:.9rem;
+    }
+
+    .vehicle-title{
+      font-size:.98rem;
+    }
+
+    .vehicle-subtitle{
+      font-size:.73rem;
+    }
+
+    .vehicle-form-body{
+      padding:.9rem;
+    }
+
+    .v-file-wrap{
+      align-items:flex-start;
+      flex-direction:column;
+    }
+
+    .v-actions .btn{
+      width:100%;
+      justify-content:center;
+    }
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="vehicle-page">
+
+  <div class="vehicle-hero">
+    <div class="d-flex flex-column flex-md-row justify-content-between align-items-md-center gap-3">
+      <div>
+        <h3 class="vehicle-title">
+          <i class="fa-solid fa-truck text-primary"></i>
+          Add Vehicle
+        </h3>
+        <div class="vehicle-subtitle">
+          Register a vehicle used for transport trips in a clean organized form.
+        </div>
+      </div>
+
+      <a href="{% url 'transport:vehicle_list' %}" class="btn btn-outline-secondary vehicle-back-btn">
+        <i class="fa-solid fa-arrow-left me-1"></i> Back to vehicles
+      </a>
+    </div>
+  </div>
+
+  <div class="vehicle-form-card">
+    <div class="vehicle-form-head">
+      <h4>
+        <i class="fa-solid fa-pen-to-square text-primary"></i>
+        Vehicle Details
+      </h4>
+    </div>
+
+    <div class="vehicle-form-body">
+      <form method="post" enctype="multipart/form-data" novalidate id="vehicleForm" autocomplete="on">
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+          <div class="vehicle-alert">{{ form.non_field_errors }}</div>
+        {% endif %}
+
+        {% for field in form %}
+          <div class="v-field">
+            {% if field.field.widget.input_type == "checkbox" %}
+              <div class="v-boolean">
+                {{ field }}
+                <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+              </div>
+              {% if field.help_text %}<div class="v-help">{{ field.help_text }}</div>{% endif %}
+              {% if field.errors %}<div class="v-error">{{ field.errors|striptags }}</div>{% endif %}
+
+            {% elif field.field.widget.input_type == "file" %}
+              <label class="v-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+
+              <div class="v-file-wrap">
+                <div class="v-preview" id="filePreviewBox" aria-label="Image preview">
+                  <i class="fa-solid fa-image"></i>
+                </div>
+
+                <div class="v-file-side">
+                  {{ field }}
+                  {% if field.help_text %}<div class="v-help">{{ field.help_text }}</div>{% endif %}
+                  {% if field.errors %}<div class="v-error">{{ field.errors|striptags }}</div>{% endif %}
+                </div>
+              </div>
+
+            {% else %}
+              <label class="v-label" for="{{ field.id_for_label }}">{{ field.label }}</label>
+              {{ field }}
+              {% if field.help_text %}<div class="v-help">{{ field.help_text }}</div>{% endif %}
+              {% if field.errors %}<div class="v-error">{{ field.errors|striptags }}</div>{% endif %}
+            {% endif %}
+          </div>
+        {% endfor %}
+
+        <div class="v-actions" role="group" aria-label="Form actions">
+          <a href="{% url 'transport:vehicle_list' %}" class="btn btn-outline-secondary">Cancel</a>
+
+          <button type="submit" class="btn btn-primary vehicle-save-btn" id="saveVehicleBtn">
+            <i class="fa-solid fa-floppy-disk me-1"></i> Save Vehicle
+          </button>
+        </div>
+
+        <div class="vehicle-note">
+          Keep vehicle details short, accurate, and easy to recognize later.
+        </div>
+      </form>
+    </div>
+  </div>
+
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  const form = document.getElementById('vehicleForm');
+  if (!form) return;
+
+  (function normalizeFields(){
+    const els = form.querySelectorAll('input, select, textarea');
+
+    els.forEach(el => {
+      if (el.type === 'hidden' || el.type === 'submit' || el.type === 'button') return;
+
+      const tag = el.tagName.toLowerCase();
+      const isCheckbox = el.type === 'checkbox';
+      const isFile = el.type === 'file';
+      const id = el.id || el.name;
+
+      if (id && !el.placeholder && !isCheckbox && !isFile && tag !== 'select') {
+        const label = form.querySelector('label[for="' + id + '"]');
+        if (label) el.placeholder = label.textContent.trim();
+      }
+
+      const name = (el.name || '').toLowerCase();
+      if (/year|capacity|weight|km|mileage/i.test(name) && el.type !== 'checkbox') {
+        el.setAttribute('inputmode', 'numeric');
+        el.setAttribute('pattern', '[0-9]*');
+      }
+
+      if (tag === 'select' && !el.getAttribute('aria-label')) {
+        const label = form.querySelector('label[for="' + (el.id || el.name) + '"]');
+        if (label) el.setAttribute('aria-label', label.textContent.trim());
+      }
+    });
+  })();
+
+  (function filePreview(){
+    const fileInput = form.querySelector('input[type="file"]');
+    const box = document.getElementById('filePreviewBox');
+    if (!fileInput || !box) return;
+
+    function reset(){
+      box.innerHTML = '<i class="fa-solid fa-image"></i>';
+    }
+
+    fileInput.addEventListener('change', function(e){
+      const f = e.target.files && e.target.files[0];
+      if (!f) return reset();
+
+      if (!f.type || !f.type.startsWith('image/')) {
+        box.innerHTML = '<span style="font-size:.72rem;color:#64748b;font-weight:700;">File selected</span>';
+        return;
+      }
+
+      const url = URL.createObjectURL(f);
+      const img = new Image();
+      img.src = url;
+      img.style.width = '100%';
+      img.style.height = '100%';
+      img.style.objectFit = 'cover';
+      img.onload = () => URL.revokeObjectURL(url);
+      box.innerHTML = '';
+      box.appendChild(img);
+    });
+
+    reset();
+  })();
+
+  (function ensureFocusVisible(){
+    const focusables = form.querySelectorAll('input, select, textarea');
+    focusables.forEach(el => {
+      el.addEventListener('focus', () => {
+        setTimeout(() => {
+          try { el.scrollIntoView({ behavior: 'smooth', block: 'center' }); } catch(e) {}
+        }, 220);
+      });
+    });
+  })();
+});
+</script>
+{% endblock %}
