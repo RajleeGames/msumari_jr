@@ -790,89 +790,9 @@
     </div>
   </div>
 
-  <div class="section-head">
-    <h5 class="section-title">Charts & Trends</h5>
-  </div>
+ 
 
-  <div class="row g-3 mb-4">
-    <div class="col-12 col-xl-8">
-      <div class="card chart-card">
-        <div class="card-body">
-          <div class="chart-title">Daily Sales vs Expenses</div>
-          <div class="chart-sub">Inside the currently selected date range</div>
-          <div class="chart-box">
-            <canvas id="dailyTrendChart"></canvas>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-12 col-xl-4">
-      <div class="card chart-card">
-        <div class="card-body">
-          <div class="chart-title">Payment Mix</div>
-          <div class="chart-sub">Cash, Bank, EBT and debt collections</div>
-          <div class="chart-box">
-            <canvas id="paymentMixChart"></canvas>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-12">
-      <div class="card chart-card">
-        <div class="card-body">
-          <div class="chart-title">Last 6 Months Revenue vs Expenses</div>
-          <div class="chart-sub">Branch-aware long-term trend</div>
-          <div class="chart-box">
-            <canvas id="monthlyTrendChart"></canvas>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <div class="section-head">
-    <h5 class="section-title">Transaction Types</h5>
-  </div>
-
-  <div class="row g-3 mb-4">
-    <div class="col-12 col-md-4">
-      <div class="card stat-card text-white" style="background:linear-gradient(135deg,#16a34a,#22c55e);">
-        <div class="card-body d-flex align-items-center justify-content-between">
-          <div>
-            <div class="small opacity-75">Cash Transactions</div>
-            <div class="display-6 fw-bold mb-0">{{ num_cash_sales|default:0 }}</div>
-          </div>
-          <i class="fa-solid fa-receipt fa-2x opacity-75"></i>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-12 col-md-4">
-      <div class="card stat-card text-white" style="background:linear-gradient(135deg,#2563eb,#3b82f6);">
-        <div class="card-body d-flex align-items-center justify-content-between">
-          <div>
-            <div class="small opacity-75">Bank Transactions</div>
-            <div class="display-6 fw-bold mb-0">{{ num_bank_sales|default:0 }}</div>
-          </div>
-          <i class="fa-solid fa-building-columns fa-2x opacity-75"></i>
-        </div>
-      </div>
-    </div>
-
-    <div class="col-12 col-md-4">
-      <div class="card stat-card text-white" style="background:linear-gradient(135deg,#7c3aed,#8b5cf6);">
-        <div class="card-body d-flex align-items-center justify-content-between">
-          <div>
-            <div class="small opacity-75">EBT Transactions</div>
-            <div class="display-6 fw-bold mb-0">{{ num_ebt_sales|default:0 }}</div>
-          </div>
-          <i class="fa-solid fa-credit-card fa-2x opacity-75"></i>
-        </div>
-      </div>
-    </div>
-  </div>
+    
 
   
 

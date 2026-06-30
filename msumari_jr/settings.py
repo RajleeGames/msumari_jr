@@ -14,19 +14,19 @@ SECRET_KEY = 'django-insecure-rrep98zgpho^4hn2l=@ms&4vh$+e=yq=sh7)x=0wia_vx6(xe%
 DEBUG = True
 
 ALLOWED_HOSTS = [
-    'mbasamaseiyano.store',
-    'www.mbasamaseiyano.store',
+    'msumarijr.store',
+    'www.msumarijr.store',
     'localhost',
     '127.0.0.1',
 ]
 
 # If you will use HTTPS (recommended), Django needs these trusted origins
 CSRF_TRUSTED_ORIGINS = [
-    'https://mbasamaseiyano.store',
-    'https://www.mbasamaseiyano.store',
+    'https://msumarijr.store',
+    'https://www.msumarijr.store',
     # (Optional) while testing without SSL you can add http:
-    'http://mbasamaseiyano.store',
-    'http://www.mbasamaseiyano.store',
+    'http://msumarijr.store',
+    'http://www.msumarijr.store',
 ]
 
 # Recommended behind Nginx (so Django knows requests were HTTPS)
@@ -67,7 +67,7 @@ MIDDLEWARE = [
 ]
 
 
-ROOT_URLCONF = 'mbasa_maseiyano.urls'
+ROOT_URLCONF = 'msumari_jr.urls'
 
 
 # ─── Templates ──────────────────────────────────────────────────
@@ -93,7 +93,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'mbasa_maseiyano.wsgi.application'
+WSGI_APPLICATION = 'msumari_jr.wsgi.application'
 
 
 # ─── Database ───────────────────────────────────────────────────
@@ -116,7 +116,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 BEEM_API_KEY = config('BEEM_API_KEY')
 BEEM_SECRET_KEY = config('BEEM_SECRET_KEY')
-BEEM_SENDER_ID = config('BEEM_SENDER_ID', default='MBASA LTD')
+BEEM_SENDER_ID = config('BEEM_SENDER_ID', default='msumari jr')
 
 BEEM_API_URL_SEND = "https://apisms.beem.africa/v1/send"
 BEEM_BALANCE_URL  = "https://apisms.beem.africa/public/v1/vendors/balance"
