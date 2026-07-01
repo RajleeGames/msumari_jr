@@ -775,6 +775,14 @@
           {% if role == 'admin' %}
             <div class="sb-section-title">Admin</div>
 
+            <a class="sb-link {% if request.path|slice:':7' == '/admin/' %}active{% endif %}"
+   href="/admin/"
+   target="_blank"
+   rel="noopener">
+  <i class="fa-solid fa-screwdriver-wrench"></i>
+  <span class="label">Admin Panel</span>
+</a>
+
             <a class="sb-link {% if request.resolver_match.url_name == 'stock_management' %}active{% endif %}"
                href="{% url 'sales:stock_management' %}">
               <i class="fa-solid fa-boxes-packing"></i> <span class="label">Stock</span>
@@ -1196,6 +1204,13 @@
 
           {% if role == 'admin' %}
             <hr style="border-color: rgba(255,255,255,.10);">
+
+            <a class="sb-link {% if request.path|slice:':7' == '/admin/' %}active{% endif %}"
+   href="/admin/"
+   target="_blank"
+   rel="noopener">
+  <i class="fa-solid fa-screwdriver-wrench"></i> Admin Panel
+</a>
 
             <a class="sb-link" href="{% url 'sales:stock_management' %}">
               <i class="fa-solid fa-boxes-packing"></i> Stock
