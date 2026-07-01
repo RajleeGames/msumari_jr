@@ -2791,7 +2791,7 @@ def export_products_excel(request):
 
     # ---------- TITLE ----------
     ws.merge_cells("A1:C1")
-    ws["A1"] = "KILASI INVESTMENT - PRODUCTS STOCK REPORT"
+    ws["A1"] = "MSUMARI JR - PRODUCTS STOCK REPORT"
     ws["A1"].font = title_font
     ws["A1"].alignment = left
 
@@ -4105,7 +4105,7 @@ def period_progress_report(request):
 
         # ---------- Summary Sheet ----------
         ws.merge_cells("A1:D1")
-        ws["A1"] = "KILASI INVESTMENT - SALES PROGRESS REPORT"
+        ws["A1"] = "MSUMARI JR - SALES PROGRESS REPORT"
         ws["A1"].font = title_font
         ws["A1"].alignment = center
 

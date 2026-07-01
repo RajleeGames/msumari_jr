@@ -25,7 +25,7 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = (
         "id",
         "name",
-        "business_type",
+        
         "category",
         "supplier",
         "buying_price",
@@ -35,13 +35,13 @@ class ProductAdmin(admin.ModelAdmin):
         "reorder_level",
         "barcode",
     )
-    list_filter = ("business_type", "category", "supplier")
+    list_filter = ( "category", "supplier")
     search_fields = ("name", "barcode")
     readonly_fields = ("stock", "barcode")
 
     fieldsets = (
         ("Basic Info", {
-            "fields": ("name", "business_type", "category", "supplier", "barcode")
+            "fields": ("name",  "category", "supplier", "barcode")
         }),
         ("Pricing", {
             "fields": ("buying_price", "selling_price", "reorder_level")
