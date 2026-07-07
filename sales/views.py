@@ -2625,7 +2625,7 @@ from openpyxl.worksheet.page import PageMargins
 def product_list(request):
     q = (request.GET.get("q") or "").strip()
     selected_branch_id = (request.GET.get("branch") or "").strip()
-    selected_business_type = (request.GET.get("business_type") or "").strip()
+    
 
     user_branch = _get_user_branch(request) if _is_seller(request) else None
     is_seller = bool(user_branch)
@@ -2670,19 +2670,14 @@ def product_list(request):
         else:
             use_branch_stock = False
 
-    # Business type filter
-    valid_business_types = {"electronics", "furniture", "magodoro", "unassigned"}
-    if selected_business_type in valid_business_types:
-        qs = qs.filter(business_type=selected_business_type)
-    else:
-        selected_business_type = ""
+    
 
     # Search filter
     if q:
         qs = qs.filter(
             Q(name__icontains=q) |
-            Q(category__name__icontains=q) |
-            Q(business_type__icontains=q)
+            Q(category__name__icontains=q) 
+            
         )
 
     paginator = Paginator(qs.order_by("-id"), 20)
@@ -2698,13 +2693,8 @@ def product_list(request):
         "branch": selected_branch,
         "branches": branches,
         "selected_branch_id": str(selected_branch.id) if selected_branch else "",
-        "selected_business_type": selected_business_type,
-        "business_type_choices": [
-            ("electronics", "Electronics"),
-            ("furniture", "Furniture"),
-            ("magodoro", "Magodoro"),
-            ("unassigned", "Unassigned"),
-        ],
+        
+        
         "is_seller": is_seller,
     })
 
