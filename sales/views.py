@@ -1214,7 +1214,7 @@ def invoice_receipt(request, pk):
     is_cancelled = (getattr(inv, "invoice_state", "active") or "active").lower() == "cancelled"
 
     company = {
-        "name": "MSUMARI JR",
+        "name": "MSUMARI JR STORE",
         "tin": "TIN: 129-816-910",
         "phone": "Tel: +255 XXX XXX XXX",
         "location": "Rau, Kazimoto Complex, Moshi",
