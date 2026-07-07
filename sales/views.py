@@ -1071,7 +1071,7 @@ def invoice_detail(request, pk=None, invoice_id=None):
         is_cashier = role == "cashier"
         is_seller = role == "seller"
 
-    can_cancel_invoice = (not is_cancelled) and (is_admin or is_cashier)
+    can_cancel_invoice = (not is_cancelled) and (is_admin or is_cashier or is_seller)
 
     # -----------------------------
     # ITEMS (safe computed list)
