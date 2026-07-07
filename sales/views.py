@@ -1214,10 +1214,10 @@ def invoice_receipt(request, pk):
     is_cancelled = (getattr(inv, "invoice_state", "active") or "active").lower() == "cancelled"
 
     company = {
-        "name": "MBASA MASEIYANO",
-        "tin": "TIN: 155-581-522",
+        "name": "MSUMARI JR",
+        "tin": "TIN: 129-816-910",
         "phone": "Tel: +255 XXX XXX XXX",
-        "location": "Moshi, Tanzania",
+        "location": "Rau, Kazimoto Complex, Moshi",
         "footer": "THANK YOU FOR BUYING WITH US",
     }
 

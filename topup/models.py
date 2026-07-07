@@ -66,7 +66,7 @@ class TopupTransaction(models.Model):
     used_item_category = models.CharField(max_length=255, blank=True)
     used_item_condition = models.CharField(max_length=255, blank=True)
 
-    # what Kilasi accepts as value/cost of the used item
+    # what MSUMARI JR accepts as value/cost of the used item
     used_item_buying_price = models.DecimalField(max_digits=14, decimal_places=2, default=Decimal("0.00"))
 
     # cash added by customer during top-up

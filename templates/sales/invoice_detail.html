@@ -546,10 +546,6 @@
             </a>
           {% endif %}
         {% endif %}
-
-        <button type="button" class="btn btn-primary btn-sm inv-btn" onclick="window.print()">
-          <i class="fa-solid fa-print me-1"></i> Print
-        </button>
       </div>
     </div>
 
@@ -693,16 +689,16 @@
                   <th class="inv-t-right" style="width:110px">Profit</th>
                 </tr>
               </thead>
+
               <tbody>
                 {% for item in invoice_items %}
                 <tr>
                   <td class="inv-t-center inv-muted inv-mono">{{ forloop.counter }}</td>
                   <td>
                     <div class="inv-product-name">{{ item.product.name|default:"Unknown Product" }}</div>
-                    <div class="inv-product-sub">
-                      Sold item on this invoice
-                    </div>
+                    <div class="inv-product-sub">Sold item on this invoice</div>
                   </td>
+
                   <td class="inv-t-center inv-mono">{{ item.quantity }}</td>
 
                   <td class="inv-t-right inv-mono">
@@ -749,6 +745,7 @@
                     Tsh {{ total_items_discount|default:0|floatformat:0|intcomma }}
                   </td>
                 </tr>
+
                 <tr>
                   <td colspan="7" class="inv-t-right">Total Profit</td>
                   <td colspan="2" class="inv-t-right inv-mono {% if total_items_profit < 0 %}inv-profit-neg{% else %}inv-profit-pos{% endif %}">
@@ -790,18 +787,22 @@
             <span>Subtotal</span>
             <b class="inv-mono">Tsh {{ invoice.subtotal|default:0|floatformat:0|intcomma }}</b>
           </div>
+
           <div class="inv-rowx">
             <span>Tax</span>
             <b class="inv-mono">Tsh {{ invoice.tax|default:0|floatformat:0|intcomma }}</b>
           </div>
+
           <div class="inv-rowx">
             <span>Shipping</span>
             <b class="inv-mono">Tsh {{ invoice.shipping_fee|default:0|floatformat:0|intcomma }}</b>
           </div>
+
           <div class="inv-rowx">
             <span>Total Discount</span>
             <b class="inv-mono">Tsh {{ total_items_discount|default:0|floatformat:0|intcomma }}</b>
           </div>
+
           <div class="inv-rowx inv-grand">
             <span>Grand Total</span>
             <b class="inv-mono">Tsh {{ invoice.total_amount|default:0|floatformat:0|intcomma }}</b>
@@ -827,6 +828,7 @@
             <button class="btn btn-outline-secondary inv-btn" disabled>
               <i class="fa-solid fa-hand-holding-dollar me-1"></i> Record Payment Disabled
             </button>
+
             <button class="btn btn-outline-secondary inv-btn" disabled>
               <i class="fa-solid fa-rotate-left me-1"></i> Add Return Disabled
             </button>
@@ -870,6 +872,7 @@
             <b><i class="fa-solid fa-coins me-1"></i> Payments</b>
             <span class="inv-pill">Tsh <b class="inv-mono">{{ payments_total|default:0|intcomma }}</b></span>
           </div>
+
           <div class="inv-hist-body">
             {% if payments %}
               {% for p in payments %}
@@ -881,6 +884,7 @@
                       {{ p.timestamp|date:"d M Y, H:i" }}
                     </div>
                   </div>
+
                   <div class="inv-hist-right">
                     <div class="inv-hist-amt inv-mono">Tsh {{ p.amount|intcomma }}</div>
                     <div class="inv-hist-date">Paid</div>
@@ -898,6 +902,7 @@
             <b><i class="fa-solid fa-rotate-left me-1"></i> Returns</b>
             <span class="inv-pill">Tsh <b class="inv-mono">{{ returns_total|default:0|intcomma }}</b></span>
           </div>
+
           <div class="inv-hist-body">
             {% if returns %}
               {% for r in returns %}
@@ -909,6 +914,7 @@
                       {{ r.created_at|date:"d M Y, H:i" }}
                     </div>
                   </div>
+
                   <div class="inv-hist-right">
                     <div class="inv-hist-amt inv-mono">Tsh {{ r.total_amount|floatformat:0|intcomma }}</div>
                     <div class="inv-hist-date">Returned</div>

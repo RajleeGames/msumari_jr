@@ -1,57 +1,164 @@
 {% load humanize %}
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Receipt #{{ invoice.id }}</title>
+
   <style>
     :root { --w: 80mm; }
-    *{ box-sizing:border-box; }
-    body{
-      margin:0;
-      background:#fff;
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      color:#000;
+
+    * {
+      box-sizing: border-box;
     }
-    .paper{
+
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      background: #fff;
+      color: #000;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+    }
+
+    .paper {
       width: var(--w);
       margin: 0 auto;
       padding: 6mm 4mm;
+      background: #fff;
     }
-    .center{ text-align:center; }
-    .muted{ opacity:.85; }
-    .hr{
+
+    .center {
+      text-align: center;
+    }
+
+    .muted {
+      opacity: .85;
+    }
+
+    .hr {
       border-top: 1px dashed #000;
       margin: 10px 0;
     }
-    .row{
-      display:flex;
-      justify-content:space-between;
-      gap:8px;
+
+    .row {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
       font-size: 12px;
       line-height: 1.25;
     }
-    .big{ font-size: 16px; font-weight: 800; letter-spacing:.3px; }
-    .sm{ font-size: 12px; }
-    .xs{ font-size: 11px; }
-    .items{ margin-top: 8px; }
-    .item{ margin: 8px 0; }
-    .item .name{ font-size: 12px; font-weight: 700; }
-    .item .meta{ display:flex; justify-content:space-between; font-size: 12px; }
-    .bold{ font-weight: 800; }
-    @media print{
-      body{ background:#fff; }
-      .paper{ padding: 0; }
+
+    .big {
+      font-size: 16px;
+      font-weight: 800;
+      letter-spacing: .3px;
+    }
+
+    .sm {
+      font-size: 12px;
+    }
+
+    .xs {
+      font-size: 11px;
+    }
+
+    .items {
+      margin-top: 8px;
+    }
+
+    .item {
+      margin: 8px 0;
+    }
+
+    .item .name {
+      font-size: 12px;
+      font-weight: 700;
+      word-break: break-word;
+    }
+
+    .item .meta {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      font-size: 12px;
+    }
+
+    .bold {
+      font-weight: 800;
+    }
+
+    .print-actions {
+      width: 80mm;
+      margin: 8px auto;
+      display: flex;
+      justify-content: center;
+      gap: 8px;
+    }
+
+    .print-actions button {
+      border: 1px solid #111827;
+      background: #111827;
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .print-actions button.secondary {
+      background: #fff;
+      color: #111827;
+    }
+
+    @page {
+      size: 80mm auto;
+      margin: 0;
+    }
+
+    @media print {
+      html,
+      body {
+        width: 80mm;
+        margin: 0 !important;
+        padding: 0 !important;
+        background: #fff;
+      }
+
+      .paper {
+        width: 80mm;
+        margin: 0;
+        padding: 4mm;
+      }
+
+      .print-actions {
+        display: none !important;
+      }
     }
   </style>
 </head>
+
 <body>
+
+  <div class="print-actions">
+    <button type="button" onclick="printReceiptQZ()">Direct Print</button>
+    <button type="button" class="secondary" onclick="window.print()">Browser Print</button>
+  </div>
+
   <div class="paper">
 
     <!-- HEADER -->
     <div class="center">
-      <div class="big">{% if company.name %}{{ company.name }}{% else %}MSUMARI JR{% endif %}</div>
+      <div class="big">
+        {% if company.name %}
+          {{ company.name }}
+        {% else %}
+          MSUMARI JR
+        {% endif %}
+      </div>
 
       {% if company.location %}
         <div class="sm muted">{{ company.location }}</div>
@@ -59,35 +166,55 @@
         <div class="sm muted">Moshi, Tanzania</div>
       {% endif %}
 
-      {# ✅ FORCE PHONE + TIN (your required values) #}
-      <div class="sm muted">Tel: 0713288162</div>
-      <div class="sm bold">TIN: 155-581-522</div>
+      <div class="sm muted">Tel: 0718526156</div>
+      <div class="sm bold">TIN: 129-816-910</div>
     </div>
 
     <div class="hr"></div>
 
     <!-- META -->
-    <div class="row"><span>Receipt</span><span class="bold">#{{ invoice.id }}</span></div>
-    <div class="row"><span>Date</span><span>{{ invoice.created_at|date:"Y-m-d H:i" }}</span></div>
-    <div class="row"><span>Seller</span><span>{{ invoice.seller.username }}</span></div>
+    <div class="row">
+      <span>Receipt</span>
+      <span class="bold">#{{ invoice.id }}</span>
+    </div>
+
+    <div class="row">
+      <span>Date</span>
+      <span>{{ invoice.created_at|date:"Y-m-d H:i" }}</span>
+    </div>
+
+    <div class="row">
+      <span>Seller</span>
+      <span>{{ invoice.seller.username }}</span>
+    </div>
+
     {% if invoice.branch %}
-      <div class="row"><span>Branch</span><span>{{ invoice.branch.name }}</span></div>
+      <div class="row">
+        <span>Branch</span>
+        <span>{{ invoice.branch.name }}</span>
+      </div>
     {% endif %}
-    <div class="row"><span>Customer</span><span>{{ customer_label|default:"Walk-in" }}</span></div>
-    <div class="row"><span>Payment</span><span class="bold">{{ status_label|default:invoice.status }}</span></div>
+
+    <div class="row">
+      <span>Customer</span>
+      <span>{{ customer_label|default:"Walk-in" }}</span>
+    </div>
+
+    <div class="row">
+      <span>Payment</span>
+      <span class="bold">{{ status_label|default:invoice.status }}</span>
+    </div>
 
     <div class="hr"></div>
 
-    <!-- ITEMS (ROBUST LOOP) -->
+    <!-- ITEMS -->
     <div class="items">
 
-      {# Prefer invoice.items.all if exists, else fallback to invoice.invoiceitem_set.all #}
       {% if invoice.items.all %}
         {% for it in invoice.items.all %}
           <div class="item">
             <div class="name">{{ it.product.name }}</div>
 
-            {# ✅ build safe unit price & line total (works even if effective_price/line_total not stored) #}
             {% with unit=it.effective_price|default:it.selling_price|default:it.unit_price %}
               <div class="meta">
                 <span>{{ it.quantity }} x {{ unit|default:0|floatformat:0|intcomma }}</span>
@@ -115,7 +242,7 @@
         {% endfor %}
 
       {% else %}
-        {# fallback relation name #}
+
         {% for it in invoice.invoiceitem_set.all %}
           <div class="item">
             <div class="name">{{ it.product.name }}</div>
@@ -145,13 +272,14 @@
         {% empty %}
           <div class="xs muted center">No items.</div>
         {% endfor %}
+
       {% endif %}
 
     </div>
 
     <div class="hr"></div>
 
-    <!-- TOTALS (SAFE DEFAULTS) -->
+    <!-- TOTALS -->
     <div class="row">
       <span>Subtotal</span>
       <span class="bold">Tsh {{ invoice.subtotal|default:invoice.total_amount|default:0|floatformat:0|intcomma }}</span>
@@ -176,23 +304,266 @@
 
     {% if invoice.status == "debt" %}
       <div class="hr"></div>
-      <div class="row"><span>Paid</span><span class="bold">Tsh {{ payments_total|default:0|intcomma }}</span></div>
-      <div class="row"><span>Balance</span><span class="bold">Tsh {{ balance_value|default:0|intcomma }}</span></div>
+      <div class="row">
+        <span>Paid</span>
+        <span class="bold">Tsh {{ payments_total|default:0|intcomma }}</span>
+      </div>
+      <div class="row">
+        <span>Balance</span>
+        <span class="bold">Tsh {{ balance_value|default:0|intcomma }}</span>
+      </div>
     {% endif %}
 
     <div class="hr"></div>
 
+    <!-- FOOTER -->
     <div class="center sm bold">
-      {% if company.footer %}{{ company.footer }}{% else %}THANK YOU FOR BUYING WITH US{% endif %}
+      {% if company.footer %}
+        {{ company.footer }}
+      {% else %}
+        THANK YOU FOR BUYING WITH US
+      {% endif %}
     </div>
-    <div class="center xs muted">Karibu tena • Powered by KILASI POS</div>
+
+    <div class="center xs muted">Karibu tena</div>
 
   </div>
 
-  {% if autoprint %}
+  <script src="{% static 'vendor/qz/qz-tray.js' %}"></script>
+
   <script>
-    window.addEventListener("load", () => window.print());
+    const PRINTER_NAME = "";
+    const RECEIPT_WIDTH = 48;
+
+    function cleanText(value) {
+      return String(value || "")
+        .replace(/[^\x20-\x7E]/g, "")
+        .replace(/\s+/g, " ")
+        .trim();
+    }
+
+    function centerPrinterText(value) {
+      return cleanText(value).substring(0, RECEIPT_WIDTH);
+    }
+
+    function lineText(left, right) {
+      left = cleanText(left);
+      right = cleanText(right);
+
+      let spaces = RECEIPT_WIDTH - left.length - right.length;
+
+      if (spaces < 1) {
+        let allowedLeft = RECEIPT_WIDTH - right.length - 1;
+        if (allowedLeft < 1) allowedLeft = RECEIPT_WIDTH - 1;
+        left = left.substring(0, allowedLeft);
+        spaces = RECEIPT_WIDTH - left.length - right.length;
+      }
+
+      if (spaces < 1) spaces = 1;
+
+      return left + " ".repeat(spaces) + right;
+    }
+
+    function separator() {
+      return "-".repeat(RECEIPT_WIDTH);
+    }
+
+    function addWrappedName(data, name) {
+      name = cleanText(name);
+
+      if (!name) return data;
+
+      while (name.length > RECEIPT_WIDTH) {
+        data += name.substring(0, RECEIPT_WIDTH) + "\n";
+        name = name.substring(RECEIPT_WIDTH);
+      }
+
+      data += name + "\n";
+      return data;
+    }
+
+    async function getQzPrinter() {
+      if (PRINTER_NAME && PRINTER_NAME.trim() !== "") {
+        return await qz.printers.find(PRINTER_NAME);
+      }
+
+      return await qz.printers.getDefault();
+    }
+
+    function buildRawReceipt() {
+      const ESC = "\x1B";
+      const GS = "\x1D";
+
+      let data = "";
+
+      data += ESC + "@";
+
+      // HEADER CENTER
+      data += ESC + "a" + "\x01";
+
+      data += ESC + "!" + "\x08";
+      data += centerPrinterText("{% if company.name %}{{ company.name|escapejs }}{% else %}MSUMARI JR{% endif %}") + "\n";
+      data += ESC + "!" + "\x00";
+
+      data += centerPrinterText("{% if company.location %}{{ company.location|escapejs }}{% else %}Moshi, Tanzania{% endif %}") + "\n";
+      data += centerPrinterText("Tel: 0718526156") + "\n";
+      data += centerPrinterText("TIN: 129-816-910") + "\n";
+
+      // LEFT ALIGN
+      data += ESC + "a" + "\x00";
+      data += separator() + "\n";
+
+      data += lineText("Receipt", "#{{ invoice.id|escapejs }}") + "\n";
+      data += lineText("Date", "{{ invoice.created_at|date:'Y-m-d H:i'|escapejs }}") + "\n";
+      data += lineText("Seller", "{{ invoice.seller.username|escapejs }}") + "\n";
+
+      {% if invoice.branch %}
+      data += lineText("Branch", "{{ invoice.branch.name|escapejs }}") + "\n";
+      {% endif %}
+
+      data += lineText("Customer", "{{ customer_label|default:'Walk-in'|escapejs }}") + "\n";
+      data += lineText("Payment", "{{ status_label|default:invoice.status|escapejs }}") + "\n";
+
+      data += separator() + "\n";
+
+      {% if invoice.items.all %}
+
+        {% for it in invoice.items.all %}
+          data = addWrappedName(data, "{{ it.product.name|escapejs }}");
+
+          {% with unit=it.effective_price|default:it.selling_price|default:it.unit_price %}
+            data += lineText(
+              "{{ it.quantity|escapejs }} x {{ unit|default:0|floatformat:0|intcomma|escapejs }}",
+              "Tsh {% if it.line_total %}{{ it.line_total|floatformat:0|intcomma|escapejs }}{% else %}{% if it.total %}{{ it.total|floatformat:0|intcomma|escapejs }}{% else %}{{ it.get_total|default:0|floatformat:0|intcomma|escapejs }}{% endif %}{% endif %}"
+            ) + "\n";
+          {% endwith %}
+
+          {% if it.discount and it.discount > 0 %}
+            data += lineText("Discount/unit", "Tsh {{ it.discount|intcomma|escapejs }}") + "\n";
+          {% endif %}
+        {% empty %}
+          data += "No items.\n";
+        {% endfor %}
+
+      {% else %}
+
+        {% for it in invoice.invoiceitem_set.all %}
+          data = addWrappedName(data, "{{ it.product.name|escapejs }}");
+
+          {% with unit=it.effective_price|default:it.selling_price|default:it.unit_price %}
+            data += lineText(
+              "{{ it.quantity|escapejs }} x {{ unit|default:0|floatformat:0|intcomma|escapejs }}",
+              "Tsh {% if it.line_total %}{{ it.line_total|floatformat:0|intcomma|escapejs }}{% else %}{% if it.total %}{{ it.total|floatformat:0|intcomma|escapejs }}{% else %}{{ it.get_total|default:0|floatformat:0|intcomma|escapejs }}{% endif %}{% endif %}"
+            ) + "\n";
+          {% endwith %}
+
+          {% if it.discount and it.discount > 0 %}
+            data += lineText("Discount/unit", "Tsh {{ it.discount|intcomma|escapejs }}") + "\n";
+          {% endif %}
+        {% empty %}
+          data += "No items.\n";
+        {% endfor %}
+
+      {% endif %}
+
+      data += separator() + "\n";
+
+      data += lineText(
+        "Subtotal",
+        "Tsh {{ invoice.subtotal|default:invoice.total_amount|default:0|floatformat:0|intcomma|escapejs }}"
+      ) + "\n";
+
+      data += lineText(
+        "Tax",
+        "Tsh {{ invoice.tax|default:0|floatformat:0|intcomma|escapejs }}"
+      ) + "\n";
+
+      data += lineText(
+        "Shipping",
+        "Tsh {{ invoice.shipping_fee|default:0|floatformat:0|intcomma|escapejs }}"
+      ) + "\n";
+
+      data += separator() + "\n";
+
+      data += ESC + "!" + "\x08";
+      data += lineText(
+        "TOTAL",
+        "Tsh {{ invoice.total_amount|default:0|floatformat:0|intcomma|escapejs }}"
+      ) + "\n";
+      data += ESC + "!" + "\x00";
+
+      {% if invoice.status == "debt" %}
+        data += separator() + "\n";
+        data += lineText("Paid", "Tsh {{ payments_total|default:0|intcomma|escapejs }}") + "\n";
+        data += lineText("Balance", "Tsh {{ balance_value|default:0|intcomma|escapejs }}") + "\n";
+      {% endif %}
+
+      data += separator() + "\n";
+
+      // FOOTER CENTER
+      data += ESC + "a" + "\x01";
+      data += centerPrinterText("{% if company.footer %}{{ company.footer|escapejs }}{% else %}THANK YOU FOR BUYING WITH US{% endif %}") + "\n";
+      data += centerPrinterText("Karibu tena") + "\n";
+
+      // BACK TO LEFT
+      data += ESC + "a" + "\x00";
+
+      // Feed paper before cutting
+      data += "\n\n\n";
+
+      // Auto cut
+      data += GS + "V" + "\x00";
+
+      return data;
+    }
+
+    async function printReceiptQZ() {
+      try {
+        if (typeof qz === "undefined") {
+          alert("QZ Tray JS not loaded. Check static/vendor/qz/qz-tray.js");
+          return;
+        }
+
+        if (!qz.websocket.isActive()) {
+          await qz.websocket.connect();
+        }
+
+        const printer = await getQzPrinter();
+
+        const config = qz.configs.create(printer, {
+          encoding: "CP437",
+          copies: 1
+        });
+
+        const rawReceipt = buildRawReceipt();
+
+        await qz.print(config, [rawReceipt]);
+
+        setTimeout(function () {
+          window.close();
+        }, 800);
+
+      } catch (err) {
+        console.error("QZ printing error:", err);
+
+        alert(
+          "Direct print failed.\n\n" +
+          "Check QZ Tray, printer connection, and default printer.\n\n" +
+          "Browser print will open as fallback."
+        );
+
+        window.print();
+      }
+    }
+
+    {% if autoprint %}
+      window.addEventListener("load", function () {
+        setTimeout(function () {
+          printReceiptQZ();
+        }, 500);
+      });
+    {% endif %}
   </script>
-  {% endif %}
+
 </body>
 </html>

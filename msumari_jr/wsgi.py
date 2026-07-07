@@ -1,5 +1,5 @@
 """
-WSGI config for mbasa_maseiyano project.
+WSGI config for msumari_maseiyano project.
 
 It exposes the WSGI callable as a module-level variable named ``application``.
 
